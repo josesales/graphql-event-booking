@@ -32,7 +32,7 @@ module.exports = {
             });
 
             const eventDB = await event.save();
-            const user = await User.findById(eventDB.creator).populate('creator');
+            const user = await User.findById(eventDB.creator);
 
             //the parser happens on the backend, before we give the return value to the frontend graphql does the data parsing
             //and sends only the data requested by the frontend

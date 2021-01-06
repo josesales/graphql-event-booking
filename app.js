@@ -25,7 +25,7 @@ mongoose.connect(dbUri, {
     });
 }).catch(error => {
     console.log('Error while connecting to the db: ' + error);
-})
+});
 
 
 //Users
@@ -85,3 +85,47 @@ mongoose.connect(dbUri, {
 //     date
 //     }
 //   } 
+
+//Booking
+
+// query {
+//     bookings {
+//     _id
+//     user{
+//       _id
+//       email
+//     }
+//     event{
+//       _id
+//         title
+//     }
+//     createdAt
+//     updatedAt
+//   }
+//     }
+//   }
+
+// mutation{
+//     bookEvent(eventId: "5ff5d0060664d35098a090ae") {
+    //   _id
+    //   user{
+    //     _id
+    //     email
+    //   }
+    //   event{
+    //     _id
+    //       title
+    //   }
+    //   createdAt
+    //   updatedAt
+    // }
+//   }
+
+// mutation {
+//     cancelBooking(bookingId: "5ff62b3f34c5d912404a3482"){
+//       title
+//       creator {
+//         email
+//       }
+//     }
+//   }
