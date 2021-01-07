@@ -1,4 +1,4 @@
-exports.types = `
+exports.types = `#graphql
 
     type Booking {
         _id: ID!
@@ -13,12 +13,12 @@ exports.inputs = `
 
 `;
 
-exports.queries = `
+exports.queries = `#graphql
 
     bookings: [Booking!]!
 `;
 
-exports.mutations = `
+exports.mutations = `#graphql
 
     bookEvent(eventId: ID!): Booking!
     cancelBooking(bookingId: ID!): Event!

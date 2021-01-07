@@ -1,4 +1,4 @@
-exports.types = `
+exports.types = `#graphql
 
     type Event {
         _id: ID!
@@ -10,7 +10,7 @@ exports.types = `
     }
 `;
 
-exports.inputs = `
+exports.inputs = `#graphql
 
     input EventInput {
         title: String!    
@@ -20,11 +20,12 @@ exports.inputs = `
 }
 `;
 
-exports.queries = `
+exports.queries = `#graphql
 
     events: [Event!]!
 `;
 
-exports.mutations = `
+exports.mutations = `#graphql
+
     createEvent(eventInput: EventInput): Event
 `;

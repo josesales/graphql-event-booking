@@ -1,0 +1,39 @@
+mutation {
+    createUser(userInput: {email:"sales2@sales2.com", password: "1234"}) {
+    	_id
+   		email
+    	password
+    }
+  } 
+
+  query {
+    login(loginInput: {email:"sales@sales.com", password:"1234"}) {
+      userId
+      token
+      tokenExpiration
+    }
+  }
+
+query {
+    users {
+        _id
+        email
+        password
+        events {
+            _id
+            title
+          }
+    }
+}
+
+query {
+    user(userInput: {email:"sales@sales.com"}) {
+      _id
+      email
+      password
+      events {
+        _id
+        title
+      }
+    }
+  }

@@ -7,12 +7,15 @@ const dateUtil = require('../../utils/date.util');
 
 module.exports = {
 
-    bookings: async () => {
+    bookings: async (props, req) => {
         try {
             //TODO instead of use populate return the event and user with separated functions {event: getEvent.bind(this, eventId)...}
             //So instead of always search in the db to fetch the relation models 
             //It calls the function(which search in the db) only when the front request
 
+            if (!req.isAuth) {
+                throw new Error('Unauthenticated');
+            }
 
             const bookings = await Booking.find().populate('event').populate('user');
 
@@ -26,12 +29,16 @@ module.exports = {
             });
 
         } catch (error) {
-            console.log('Error while trying to fetch bookings: ' + error);
+            throw new Error('Error while trying to fetch bookings: ' + error);
         }
     },
 
-    bookEvent: async props => {
+    bookEvent: async (props, req) => {
         try {
+
+            if (!req.isAuth) {
+                throw new Error('Unauthenticated');
+            }
 
             const event = await Event.findById(props.eventId).populate('creator');
             console.log("Event: " + event)
@@ -40,12 +47,9 @@ module.exports = {
                 throw new Error('Event does not exist');
             }
 
-            // const password = await bcrypt.hash(props.userInput.password, 12);
-
-            //TODO: Change logic so any user can book any event
             const booking = new Booking({
                 event: props.eventId,
-                user: event.creator._id,
+                user: req.userId,
             });
 
             const bookingDB = await booking.save();
@@ -59,12 +63,17 @@ module.exports = {
                 updatedAt: dateUtil.fromMilliToIsoString(booking.updatedAt),
             };
         } catch (error) {
-            console.log('Error while trying to book an event: ' + error);
+            throw new Error('Error while trying to book an event: ' + error);
         }
     },
 
-    cancelBooking: async props => {
+    cancelBooking: async (props, req) => {
         try {
+
+            if (!req.isAuth) {
+                throw new Error('Unauthenticated');
+            }
+
             const booking = await Booking.findById(props.bookingId).populate('event');
 
             if (!booking) {
@@ -79,7 +88,7 @@ module.exports = {
             return event;
 
         } catch (error) {
-            console.log('Error while trying to cancel booking: ' + error);
+            throw new Error('Error while trying to cancel booking: ' + error);
         }
     }
 }

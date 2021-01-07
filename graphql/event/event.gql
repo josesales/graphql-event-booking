@@ -1,0 +1,23 @@
+query {
+    events {
+      _id
+      title
+      creator{
+        _id
+        email
+      }
+      description
+      price
+      date
+    }
+  }
+
+  mutation {
+    createEvent(eventInput: {title:"Test", description: "kkk", price: 25.90, date: "2021-01-05T19:39:36.099Z"}) {
+    _id
+    title
+    description
+    price
+    date
+    }
+  } 

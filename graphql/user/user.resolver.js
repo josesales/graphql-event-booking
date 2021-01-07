@@ -1,6 +1,33 @@
 const User = require('../../models/user');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
+
+    login: async ({ loginInput }) => {
+
+        try {
+
+            const user = await User.findOne({ email: loginInput.email });
+
+            if (!user) {
+                throw new Error('Invalid Credentials');
+            }
+
+            const isPasswordRight = await bcrypt.compare(loginInput.password, user.password)
+
+            if (!isPasswordRight) {
+                throw new Error('Invalid Credentials');
+            }
+
+            const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_KEY, { expiresIn: '1h' });
+
+            return { userId: user.id, token, tokenExpiration: 1 };
+
+        } catch (error) {
+            console.log('Error while trying to login: ' + error);
+        }
+    },
 
     users: async () => {
         try {
@@ -17,9 +44,7 @@ module.exports = {
         try {
 
             let user = await User.findOne({ ...props.userInput }).populate('events');
-            // user = await user.populate('events').execPopulate();
             return user;
-
         } catch (error) {
             console.log('Error while trying to fetch users: ' + error);
         }
@@ -33,8 +58,6 @@ module.exports = {
             if (userDB) {
                 throw new Error('Us er already exists');
             }
-
-            // const password = await bcrypt.hash(props.userInput.password, 12);
 
             const user = new User({
                 ...props.userInput,

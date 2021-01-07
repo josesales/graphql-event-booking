@@ -49,15 +49,5 @@ userSchema.pre('remove', async function (next) {
     next();
 });
 
-// userSchema.methods.toJSON = function () {
-//     const user = this;
-//     console.log('inside ToJSON: ' + user);
-//     const userObject = user.toObject();
-//     //delete the password and tokens from the user object that will be sent to the user in the response
-//     delete userObject.password;
-//     console.log('toObject: ' + userObject);
-//     return userObject;
-// }
-
 const User = mongoose.model('User', userSchema);
 module.exports = User;

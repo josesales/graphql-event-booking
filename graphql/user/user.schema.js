@@ -1,4 +1,4 @@
-exports.types = `
+exports.types = `#graphql
 
     type User {
         _id: ID!
@@ -6,9 +6,15 @@ exports.types = `
         password: String
         events: [Event]
     }
+
+    type AuthData {
+        userId: ID!
+        token: String!
+        tokenExpiration: Int!
+    }
 `;
 
-exports.inputs = `
+exports.inputs = `#graphql
 
     input UserInput {
         _id: ID
@@ -22,69 +28,14 @@ exports.inputs = `
     }  
 `;
 
-exports.queries = `
+exports.queries = `#graphql
 
     users: [User!]!
     user(userInput: UserInput): User!
+    login(loginInput: LoginInput): AuthData!
 `;
 
-exports.mutations = `
+exports.mutations = `#graphql
+
     createUser(userInput: UserInput): User
 `;
-
-
-
-
-
-// module.exports = buildSchema(`
-
-// type User {
-//     _id: ID!
-//     email: String!    
-//     password: String
-//     events: [Event]
-// }
-
-// type Event {
-//     _id: ID!
-//     title: String!    
-//     creator: User!
-//     description: String!
-//     price: Float!
-//     date: String!    
-// }
-
-// input UserInput {
-//     _id: ID
-//     email: String    
-//     password: String
-// }
-
-// input LoginInput {
-//     email: String!    
-//     password: String!
-// }
-
-// input EventInput {
-//     title: String!    
-//     description: String!
-//     price: Float!
-//     date: String!    
-// }
-
-// type RootQuery {
-//     events: [Event!]!
-//     users: [User!]!
-//     user(userInput: UserInput): User!
-// }
-
-// type rootMutation {
-//     createUser(userInput: UserInput): User
-//     createEvent(eventInput: EventInput): Event
-// }
-
-// schema {
-//     query:RootQuery
-//     mutation:rootMutation
-// }
-// `)
