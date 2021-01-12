@@ -17,10 +17,14 @@ module.exports = {
                 throw new Error('Unauthenticated');
             }
 
-            const bookings = await Booking.find().populate('event').populate('user');
+            const bookings = await Booking.find({ user: req.userId }).populate({
+                path: 'event',
+                populate: {
+                    path: 'creator'
+                }
+            }).populate('user');
 
             return bookings.map(booking => {
-                console.log(booking);
                 return {
                     ...booking._doc,
                     createdAt: dateUtil.fromMilliToIsoString(booking.createdAt),
@@ -41,7 +45,6 @@ module.exports = {
             }
 
             const event = await Event.findById(props.eventId).populate('creator');
-            console.log("Event: " + event)
 
             if (!event) {
                 throw new Error('Event does not exist');
@@ -53,7 +56,6 @@ module.exports = {
             });
 
             const bookingDB = await booking.save();
-            console.log(bookingDB)
 
             return {
                 _id: bookingDB._id,
@@ -74,7 +76,7 @@ module.exports = {
                 throw new Error('Unauthenticated');
             }
 
-            const booking = await Booking.findById(props.bookingId).populate('event');
+            const booking = await Booking.findOne({ _id: props.bookingId, user: req.userId }).populate('event');
 
             if (!booking) {
                 throw new Error('Booking does not exist');

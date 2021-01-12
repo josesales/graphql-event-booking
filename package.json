@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "frontend": "cd frontend && npm start",
+    "server": "nodemon app.js",
+    "build": "cd frontend && npm run build",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run frontend\""
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,7 @@
     "mongoose": "^5.11.10"
   },
   "devDependencies": {
+    "concurrently": "^5.3.0",
     "nodemon": "^2.0.6"
   }
 }
