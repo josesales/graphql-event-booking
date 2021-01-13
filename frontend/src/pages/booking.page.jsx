@@ -3,6 +3,8 @@ import AuthContext from '../context/auth-context';
 import { sendRequest } from '../graphql/request-sender';
 import Spinner from '../components/spinner/spinner.component';
 import BookingList from '../components/booking/booking-list.component';
+import BookingChart from '../components/booking/booking-chart.component';
+import BookingControls from '../components/booking/booking-controls.component';
 
 const bookingsQueryObj = {
     query: `#graphql
@@ -17,6 +19,7 @@ const bookingsQueryObj = {
                     _id
                     title
                     date
+                    price
                     creator {
                         email
                     }
@@ -47,6 +50,7 @@ const BookingPage = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [bookings, setBookings] = useState([]);
+    const [outputType, setOutputType] = useState('list');
     const { authContext } = useContext(AuthContext);
 
     const fetchBookings = useCallback(async () => {
@@ -77,11 +81,34 @@ const BookingPage = () => {
         setBookings(updatedBookings);
     }
 
+    let content = <Spinner />;
+
+    const changeOutputType = type => {
+        if (type === 'list') {
+            setOutputType('list');
+        } else {
+            setOutputType('chart');
+        }
+    }
+
+    if (!isLoading) {
+        content = (
+            <React.Fragment>
+                <BookingControls changeOutputType={changeOutputType} outputType={outputType} />
+                {
+                    outputType === 'list' ? <BookingList bookings={bookings} cancelBooking={cancelBooking} /> :
+                        <BookingChart bookings={bookings} />
+                }
+                <div>
+
+                </div>
+            </React.Fragment>
+        );
+    }
+
     return (
         <React.Fragment>
-            {
-                isLoading ? <Spinner /> : <BookingList bookings={bookings} cancelBooking={cancelBooking} />
-            }
+            {content}
         </React.Fragment>
     );
 }
